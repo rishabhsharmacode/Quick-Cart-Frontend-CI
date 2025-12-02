@@ -20,20 +20,12 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        working-directory: ./frontend
         run: npm install
 
-      - name: Run tests (optional)
-        working-directory: ./frontend
-        run: npm test --if-present
-        continue-on-error: true
-
       - name: Build Vite app
-        working-directory: ./frontend
         run: npm run build
 
       - name: Verify dist folder exists
-        working-directory: ./frontend
         run: |
           if [ -d "dist" ]; then
             echo "✔️ Build successful!";
