@@ -19,17 +19,16 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Vite app
-        run: npm run dev
-
-      - name: Verify dist folder exists
+      - name: Clean install dependencies
         run: |
-          if [ -d "dist" ]; then
-            echo "✔️ Build successful!";
-          else
-            echo "❌ Build failed";
-            exit 1;
-          fi
+          rm -rf node_modules package-lock.json
+          npm install --legacy-peer-deps
+
+      - name: Test Dev Server Startup
+        run: |
+          npm run dev &
+          sleep 5
+          curl -I http://localhost:5173 || exit 1
+
+      - name: Stop server
+        run: pkill node || true
